@@ -26,7 +26,7 @@
         "SettingBruteForceTimeRange": "Count login retries within this time range in minutes",
         "SettingBruteForceTimeRangeHelp": "Enter a number of minutes.",
         "SettingCountryChangeNotificationEnable": "Enable 'Login from a different country' notification",
-        "SettingCountryChangeNotificationEnableHelp": "When Matomo detects a login from a country that is different to the country of the last login for the user, an email notification will be sent. This functionality requires GeoIP location to be enabled and configured.",
+        "SettingCountryChangeNotificationEnableHelp": "When Matomo detects a login from a country that is different to the country of the last login for the user, an email notification will be sent.",
         "SettingCountryChangeNotificationEnableHelpGeoIPRequired": "This functionality requires GeoIP location to be enabled and configured.",
         "ConfirmPasswordReset": "Reset password",
         "ConfirmPasswordResetIntro": "Please type your new password to confirm you really requested having your password changed.",
@@ -86,6 +86,16 @@
         "CancelPasswordResetRequestRemoved": "The request has been removed",
         "CancelPasswordResetRequestRemovedMessage": "We have recorded that you did not request this password reset. The reset request has been removed, and no changes have been made to your account.",
         "CancelPasswordResetSecurityTip": "For added protection, we recommend enabling two-factor authentication (2FA).",
-        "SecurityTip": "Security Tip"
+        "SecurityTip": "Security Tip",
+        "LoginFromDifferentCountryEmailSubject": "Unusual login activity detected on your Matomo account",
+        "LoginFromDifferentCountryEmailBody01": "We’ve detected a login to your Matomo account from a location that is different from your usual login area.",
+        "LoginFromDifferentCountryEmailBody02": "Login details:",
+        "LoginFromDifferentCountryEmailBody03": "If this was you, no action is needed. If you did not recognise this login attempt, please take the following steps to secure your account:",
+        "LoginFromDifferentCountryEmailBody04": "Reset your password: %1$sreset your password%2$s",
+        "LoginFromDifferentCountryEmailBody05": "Enable Two-Factor Authentication (2FA) for additional security: %1$sEnable 2FA%2$s",
+        "LoginFromDifferentCountryEmailBody06": "We also recommend reviewing your recent account activity to ensure there are no other unauthorised actions.",
+        "IPAddress": "IP address",
+        "Country": "Country",
+        "DateAndTime": "Date & time"
     }
 }
