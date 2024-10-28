@@ -149,6 +149,11 @@ class Login extends \Piwik\Plugin
 
     public function checkLoginFromAnotherCountry($login)
     {
+        if ($login === 'anonymous') {
+            // do not send notification to "anonymous"
+            return;
+        }
+
         $loginFromDifferentCountryDetection = StaticContainer::get(LoginFromDifferentCountryDetection::class);
         if ($loginFromDifferentCountryDetection->isEnabled()) {
             $loginFromDifferentCountryDetection->check($login);
