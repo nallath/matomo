@@ -9,11 +9,9 @@
 
 namespace Piwik\Plugins\Login\Emails;
 
-use Piwik\Common;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Piwik;
-use Piwik\Plugins\Login\PasswordResetter;
 use Piwik\Plugins\UsersManager\Model as UsersManagerModel;
 use Piwik\Url;
 use Piwik\View;

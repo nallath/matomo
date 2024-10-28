@@ -112,7 +112,6 @@ class LoginFromDifferentCountryDetection
         }
     }
 
-
     private function sendLoginFromDifferentCountryEmailToUser($login, $country, $ip)
     {
         try {

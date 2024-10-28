@@ -25,7 +25,8 @@ class UserSettings extends \Piwik\Settings\Plugin\UserSettings
 
     private function createEnableLoginCountryChangeNotification()
     {
-        return $this->makeSetting('enableLoginCountryChangeNotification',
+        return $this->makeSetting(
+            'enableLoginCountryChangeNotification',
             $default = true,
             FieldConfig::TYPE_BOOL,
             function (FieldConfig $field) {
@@ -37,5 +38,4 @@ class UserSettings extends \Piwik\Settings\Plugin\UserSettings
             }
         );
     }
-
 }

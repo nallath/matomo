@@ -16,12 +16,10 @@ use Piwik\Config;
 use Piwik\Container\StaticContainer;
 use Piwik\FrontController;
 use Piwik\IP;
-use Piwik\Log\LoggerInterface;
 use Piwik\NoAccessException;
 use Piwik\Piwik;
 use Piwik\Plugins\Login\Security\BruteForceDetection;
 use Piwik\Plugins\Login\Security\LoginFromDifferentCountryDetection;
-use Piwik\Plugins\UserCountry\LocationProvider;
 use Piwik\Session;
 use Piwik\SettingsServer;
 
