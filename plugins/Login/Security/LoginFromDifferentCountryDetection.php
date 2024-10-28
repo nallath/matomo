@@ -15,8 +15,9 @@ use Piwik\Piwik;
 use Piwik\Plugins\GeoIp2\LocationProvider\GeoIp2;
 use Piwik\Plugins\Login\Emails\LoginFromDifferentCountryEmail;
 use Piwik\Plugins\Login\Model;
-use Piwik\Plugins\UserCountry\LocationProvider;
 use Piwik\Plugins\Login\UserSettings;
+use Piwik\Plugins\UserCountry\LocationProvider;
+use Piwik\Plugins\UsersManager\Model as UsersModel;
 
 class LoginFromDifferentCountryDetection
 {
@@ -26,13 +27,19 @@ class LoginFromDifferentCountryDetection
     private $model;
 
     /**
+     * @var UsersModel
+     */
+    private $usersModel;
+
+    /**
      * @var array|null
      */
     private $location = null;
 
-    public function __construct(Model $model)
+    public function __construct(Model $model, UsersModel $usersModel)
     {
         $this->model = $model;
+        $this->usersModel = $usersModel;
     }
 
     public function isEnabled(): bool
@@ -109,6 +116,11 @@ class LoginFromDifferentCountryDetection
     private function sendLoginFromDifferentCountryEmailToUser(string $login, string $countryCode, string $ip): void
     {
         $country = $countryCode ? Piwik::translate('Intl_Country_' . strtoupper($countryCode)) : '';
+        $user = $this->usersModel->getUser($login);
+
+        if (empty($user)) {
+            throw new \Exception('Unexpected error: unable to find user');
+        }
 
         // create from DI container so plugins can modify email contents if they want
         $email = StaticContainer::getContainer()->make(LoginFromDifferentCountryEmail::class, [
@@ -116,7 +128,7 @@ class LoginFromDifferentCountryDetection
             'country' => $country,
             'ip' => $ip,
         ]);
-        $email->addTo(Piwik::getCurrentUserEmail(), $login);
+        $email->addTo($user['email'], $login);
         $email->safeSend();
     }
 }
