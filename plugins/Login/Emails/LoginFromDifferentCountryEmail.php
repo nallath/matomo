@@ -86,23 +86,8 @@ class LoginFromDifferentCountryEmail extends Mail
 
     private function getPasswordResetLink(): string
     {
-        if (!empty($this->user)) {
-            $passwordResetter = new PasswordResetter();
-            $keySuffix = time() . Common::getRandomString($length = 32);
-
-            // Seems like we need to save the info, however there's no new password yet
-            // $this->savePasswordResetInfo($login, $newPassword, $keySuffix);
-            // Can we even link to the reset password view?
-
-            $resetToken = $passwordResetter->generatePasswordResetToken($this->user, $keySuffix);
-
-            // Create the reset URL
-            return Url::getCurrentUrlWithoutQueryString()
-                . '?module=Login&action=resetPassword&login=' . urlencode($this->login)
-                . '&resetToken=' . urlencode($resetToken);
-        }
-
-        return '';
+        // Create the reset URL
+        return Url::getCurrentUrlWithoutQueryString() . '?module=Login&showResetForm=1';
     }
 
     private function getEnable2FALink(): string
