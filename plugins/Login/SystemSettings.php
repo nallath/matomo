@@ -35,7 +35,6 @@ class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
     /** @var Setting */
     public $loginAttemptsTimeRange;
 
-
     protected function init()
     {
         $this->enableBruteForceDetection = $this->createEnableBruteForceDetection();
@@ -111,6 +110,7 @@ class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
             $field->uiControl = FieldConfig::UI_CONTROL_TEXT;
         });
     }
+
     public function isWhitelistedIp($ipAddress)
     {
         return $this->isIpInList($ipAddress, $this->whitelisteBruteForceIps->getValue());

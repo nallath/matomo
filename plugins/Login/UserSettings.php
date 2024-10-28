@@ -34,7 +34,7 @@ class UserSettings extends \Piwik\Settings\Plugin\UserSettings
                 $field->description = Piwik::translate('Login_SettingCountryChangeNotificationEnableHelp');
                 $field->uiControl = FieldConfig::UI_CONTROL_CHECKBOX;
 
-                $field->inlineHelp .= '<br>' . Piwik::translate('Login_SettingCountryChangeNotificationEnableHelpGeoIPRequired') . '</strong>';
+                $field->inlineHelp .= '<br>' . Piwik::translate('Login_SettingCountryChangeNotificationEnableHelpGeoIPRequired');
             }
         );
     }

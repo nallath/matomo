@@ -88,7 +88,7 @@
         "CancelPasswordResetSecurityTip": "For added protection, we recommend enabling two-factor authentication (2FA).",
         "SecurityTip": "Security Tip",
         "LoginFromDifferentCountryEmailSubject": "Unusual login activity detected on your Matomo account",
-        "LoginFromDifferentCountryEmailBody01": "We’ve detected a login to your Matomo account from a location that is different from your usual login area.",
+        "LoginFromDifferentCountryEmailBody01": "We’ve detected a login to your Matomo account from a location that is different from your previous login area.",
         "LoginFromDifferentCountryEmailBody02": "Login details:",
         "LoginFromDifferentCountryEmailBody03": "If this was you, no action is needed. If you did not recognise this login attempt, please take the following steps to secure your account:",
         "LoginFromDifferentCountryEmailBody04": "Reset your password: %1$sreset your password%2$s",
@@ -96,6 +96,6 @@
         "LoginFromDifferentCountryEmailBody06": "We also recommend reviewing your recent account activity to ensure there are no other unauthorised actions.",
         "IPAddress": "IP address",
         "Country": "Country",
-        "DateAndTime": "Date & time"
+        "DateAndTime": "Date &amp; time"
     }
 }

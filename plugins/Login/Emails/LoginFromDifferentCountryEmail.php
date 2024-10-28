@@ -40,7 +40,7 @@ class LoginFromDifferentCountryEmail extends Mail
     private $ip;
 
 
-    public function __construct($login, $email, $country, $ip)
+    public function __construct(string $login, string $email, string $country, string $ip)
     {
         parent::__construct();
 
@@ -52,7 +52,7 @@ class LoginFromDifferentCountryEmail extends Mail
         $this->setUpEmail();
     }
 
-    private function setUpEmail()
+    private function setUpEmail(): void
     {
         $this->setDefaultFromPiwik();
         $this->addTo($this->email);
@@ -61,7 +61,7 @@ class LoginFromDifferentCountryEmail extends Mail
         $this->setWrappedHtmlBody($this->getDefaultBodyView());
     }
 
-    private function getDefaultSubject()
+    private function getDefaultSubject(): string
     {
         return Piwik::translate('Login_LoginFromDifferentCountryEmailSubject');
     }
@@ -87,7 +87,7 @@ class LoginFromDifferentCountryEmail extends Mail
         }
     }
 
-    private function getDefaultBodyView()
+    private function getDefaultBodyView(): string
     {
         $view = new View('@Login/_loginFromDifferentCountryEmail.twig');
         $view->login = $this->login;

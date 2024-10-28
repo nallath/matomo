@@ -91,10 +91,10 @@ class Model
         Option::set($optionName, Date::getNowTimestamp());
     }
 
-    public function setLastLoginCountry($login, $country): void
+    public function setLastLoginCountry(string $login, string $countryCode): void
     {
         $optionName = $this->getLastLoginCountryOptionName($login);
-        Option::set($optionName, $country);
+        Option::set($optionName, $countryCode);
     }
 
     public function getLastLoginCountry($login): string

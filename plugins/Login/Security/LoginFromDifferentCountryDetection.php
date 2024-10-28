@@ -62,8 +62,7 @@ class LoginFromDifferentCountryDetection
         // we need the user to have the option enabled - defaults to true if not set
         // NOTE: it seems the first read in a new session is always using the default value
         $userSettings = new UserSettings();
-        return $userSettings->enableLoginCountryChangeNotification->getValue() ?? true;
-
+        return $userSettings->enableLoginCountryChangeNotification->getValue();
     }
 
     private function getLocation(): array
@@ -74,7 +73,6 @@ class LoginFromDifferentCountryDetection
             $provider = LocationProvider::getCurrentProvider();
             $this->location = $provider->getLocation([
                 'ip' => IP::getIpFromHeader(),
-                'lang' => Common::getBrowserLanguage(),
                 'disable_fallbacks' => true,
             ]) ?: [LocationProvider::COUNTRY_CODE_KEY => ''];
         }
@@ -109,13 +107,13 @@ class LoginFromDifferentCountryDetection
         }
     }
 
-    private function sendLoginFromDifferentCountryEmailToUser($login, $country, $ip)
+    private function sendLoginFromDifferentCountryEmailToUser(string $login, string $countryCode, string $ip): void
     {
         // create from DI container so plugins can modify email contents if they want
         $email = StaticContainer::getContainer()->make(LoginFromDifferentCountryEmail::class, [
             'login' => $login,
             'email' => Piwik::getCurrentUserEmail(),
-            'country' => $country ? Piwik::translate('Intl_Country_' . strtoupper($country)) : '',
+            'country' => $country ? Piwik::translate('Intl_Country_' . strtoupper($countryCode)) : '',
             'ip' => $ip,
         ]);
         $email->safeSend();
