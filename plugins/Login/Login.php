@@ -149,7 +149,7 @@ class Login extends \Piwik\Plugin
 
     public function checkLoginFromAnotherCountry($login)
     {
-        if ($login === 'anonymous') {
+        if ('anonymous' === $login) {
             // do not send notification to "anonymous"
             return;
         }
