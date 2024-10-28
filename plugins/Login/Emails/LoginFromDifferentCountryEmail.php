@@ -10,6 +10,7 @@
 namespace Piwik\Plugins\Login\Emails;
 
 use Piwik\Date;
+use Piwik\Intl\Data\Provider\DateTimeFormatProvider;
 use Piwik\Mail;
 use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
@@ -67,7 +68,7 @@ class LoginFromDifferentCountryEmail extends Mail
 
     private function getDateAndTimeFormatted(): string
     {
-        return Date::now()->getLocalized(Date::DATETIME_FORMAT_LONG);
+        return Date::now()->getLocalized(DateTimeFormatProvider::DATETIME_FORMAT_LONG);
     }
 
     private function getPasswordResetLink(): string

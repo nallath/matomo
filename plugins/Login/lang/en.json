@@ -92,7 +92,7 @@
         "LoginFromDifferentCountryEmailBody02": "Login details:",
         "LoginFromDifferentCountryEmailBody03": "If this was you, no action is needed. If you did not recognise this login attempt, please take the following steps to secure your account:",
         "LoginFromDifferentCountryEmailBody04": "Reset your password: %1$sreset your password%2$s",
-        "LoginFromDifferentCountryEmailBody05": "Enable Two-Factor Authentication (2FA) for additional security: %1$sEnable 2FA%2$s",
+        "LoginFromDifferentCountryEmailBody05": "Enable Two-Factor Authentication (2FA) for additional security: %1$senable 2FA%2$s",
         "LoginFromDifferentCountryEmailBody06": "We also recommend reviewing your recent account activity to ensure there are no other unauthorised actions.",
         "IPAddress": "IP address",
         "Country": "Country",
