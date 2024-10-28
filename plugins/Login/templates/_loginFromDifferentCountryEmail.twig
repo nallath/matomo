@@ -4,7 +4,7 @@
 <ul>
     <li>{{ 'Login_IPAddress'|translate }}: {{ ip }}</li>
     <li>{{ 'Login_Country'|translate }}: {% if country %}{{ country }}{% else %}{{ 'General_Unknown'|translate }}{% endif %}</li>
-    <li>{{ 'Login_DateAndTime'|translate }}: {{ dateTime }} UTC</li>
+    <li>{{ 'Login_DateAndTime'|translate|raw }}: {{ dateTime }} UTC</li>
 </ul>
 {% if resetPasswordLink or enable2FALink %}
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody03'|translate }}</p>
