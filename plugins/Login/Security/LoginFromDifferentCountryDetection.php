@@ -99,7 +99,7 @@ class LoginFromDifferentCountryDetection
         $isDifferentCountries = $currentLoginCountry && $currentLoginCountry !== $lastLoginCountry;
 
         if ($isDifferentCountries) {
-            if (!empty($lastLoginCountry)) {
+            if (null !== $lastLoginCountry) {
                 // send email only if we had previous value
                 $this->sendLoginFromDifferentCountryEmailToUser(
                     $login,

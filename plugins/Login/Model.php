@@ -97,9 +97,11 @@ class Model
         Option::set($optionName, $countryCode);
     }
 
-    public function getLastLoginCountry($login): string
+    public function getLastLoginCountry($login): ?string
     {
         $optionName = $this->getLastLoginCountryOptionName($login);
-        return (string) Option::get($optionName);
+        $optionValue = Option::get($optionName);
+        // convert false to null so that we don't return mixed types
+        return (false !== $optionValue) ? $optionValue : null;
     }
 }
