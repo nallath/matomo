@@ -50,6 +50,7 @@ class LoginFromDifferentCountryEmail extends Mail
         $this->setDefaultFromPiwik();
         $this->setSubject($this->getDefaultSubject());
         $this->addReplyTo($this->getFrom(), $this->getFromName());
+        $this->setBodyText($this->getDefaultBodyText());
         $this->setWrappedHtmlBody($this->getDefaultBodyView());
     }
 
@@ -79,16 +80,32 @@ class LoginFromDifferentCountryEmail extends Mail
         }
     }
 
+    protected function getDefaultBodyText(): string
+    {
+        $view = new View('@Login/_loginFromDifferentCountryTextEmail.twig');
+        $view->setContentType('text/plain');
+
+        $this->assignCommonParameters($view);
+
+        return $view->render();
+    }
+
     protected function getDefaultBodyView(): View
     {
-        $view = new View('@Login/_loginFromDifferentCountryEmail.twig');
+        $view = new View('@Login/_loginFromDifferentCountryHtmlEmail.twig');
+
+        $this->assignCommonParameters($view);
+
+        return $view;
+    }
+
+    protected function assignCommonParameters(View $view): void
+    {
         $view->login = $this->login;
         $view->country = $this->country;
         $view->ip = $this->ip;
         $view->dateTime = $this->getDateAndTimeFormatted();
         $view->resetPasswordLink = $this->getPasswordResetLink();
         $view->enable2FALink = $this->getEnable2FALink();
-
-        return $view;
     }
 }
