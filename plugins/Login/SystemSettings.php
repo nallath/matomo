@@ -35,8 +35,6 @@ class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
     /** @var Setting */
     public $loginAttemptsTimeRange;
 
-    /** @var Setting */
-    public $enableLoginCountryChangeNotification;
 
     protected function init()
     {
@@ -45,7 +43,6 @@ class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
         $this->loginAttemptsTimeRange = $this->createLoginAttemptsTimeRange();
         $this->blacklistedBruteForceIps = $this->createBlacklistedBruteForceIps();
         $this->whitelisteBruteForceIps = $this->createWhitelisteBruteForceIps();
-        $this->enableLoginCountryChangeNotification = $this->createEnableLoginCountryChangeNotification();
     }
 
     private function createEnableBruteForceDetection()
@@ -114,22 +111,6 @@ class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
             $field->uiControl = FieldConfig::UI_CONTROL_TEXT;
         });
     }
-
-    private function createEnableLoginCountryChangeNotification()
-    {
-        return $this->makeSetting('enableLoginCountryChangeNotification',
-            $default = true,
-            FieldConfig::TYPE_BOOL,
-            function (FieldConfig $field) {
-                $field->title = Piwik::translate('Login_SettingCountryChangeNotificationEnable');
-                $field->description = Piwik::translate('Login_SettingCountryChangeNotificationEnableHelp');
-                $field->uiControl = FieldConfig::UI_CONTROL_CHECKBOX;
-
-                $field->inlineHelp .= '<br>' . Piwik::translate('Login_SettingCountryChangeNotificationEnableHelpGeoIPRequired') . '</strong>';
-            }
-        );
-    }
-
     public function isWhitelistedIp($ipAddress)
     {
         return $this->isIpInList($ipAddress, $this->whitelisteBruteForceIps->getValue());
