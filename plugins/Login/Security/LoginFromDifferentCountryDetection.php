@@ -12,11 +12,10 @@ namespace Piwik\Plugins\Login\Security;
 use Piwik\Common;
 use Piwik\Container\StaticContainer;
 use Piwik\IP;
+use Piwik\Piwik;
 use Piwik\Plugins\GeoIp2\LocationProvider\GeoIp2;
 use Piwik\Plugins\Login\Emails\LoginFromDifferentCountryEmail;
-use Piwik\Plugins\Login\Emails\SuspiciousLoginAttemptsInLastHourEmail;
 use Piwik\Plugins\Login\Model;
-use Piwik\Log\LoggerInterface;
 use Piwik\Plugins\UserCountry\LocationProvider;
 use Piwik\Plugins\Login\UserSettings;
 
@@ -55,13 +54,13 @@ class LoginFromDifferentCountryDetection
         return $provider instanceof GeoIp2
             && $provider->isAvailable()
             && $provider->isWorking()
-            && true === $provider->getSupportedLocationInfo()['country_name'];
+            && true === $provider->getSupportedLocationInfo()[LocationProvider::COUNTRY_CODE_KEY];
     }
 
     private function isUserNotificationEnabled(): bool
     {
         // we need the user to have the option enabled - defaults to true if not set
-        // it seems the first read in a browser session is always using the default value
+        // NOTE: it seems the first read in a new session is always using the default value
         $userSettings = new UserSettings();
         return $userSettings->enableLoginCountryChangeNotification->getValue() ?? true;
 
@@ -77,7 +76,7 @@ class LoginFromDifferentCountryDetection
                 'ip' => IP::getIpFromHeader(),
                 'lang' => Common::getBrowserLanguage(),
                 'disable_fallbacks' => true,
-            ]) ?: ['country_name' => ''];
+            ]) ?: [LocationProvider::COUNTRY_CODE_KEY => ''];
         }
 
         return $this->location;
@@ -85,9 +84,7 @@ class LoginFromDifferentCountryDetection
 
     private function getCurrentLoginCountry(): string
     {
-        $country = $this->getLocation()['country_name'] ?? '';
-
-        return ('unknown' !== strtolower($country)) ? $country : '';
+        return $this->getLocation()[LocationProvider::COUNTRY_CODE_KEY] ?? '';
     }
 
     public function check(string $login): void
@@ -114,22 +111,13 @@ class LoginFromDifferentCountryDetection
 
     private function sendLoginFromDifferentCountryEmailToUser($login, $country, $ip)
     {
-        try {
-            // create from DI container so plugins can modify email contents if they want
-            $email = StaticContainer::getContainer()->make(LoginFromDifferentCountryEmail::class, [
-                'login' => $login,
-                'country' => $country,
-                'ip' => $ip,
-            ]);
-            $email->send();
-        } catch (\Exception $ex) {
-            // log if error is not that we can't find a user
-            if (strpos($ex->getMessage(), 'unable to find user to send') === false) {
-                StaticContainer::get(LoggerInterface::class)->info(
-                    'Error when sending ' . SuspiciousLoginAttemptsInLastHourEmail::class . ' email. User exists but encountered {exception}',
-                    ['exception' => $ex]
-                );
-            }
-        }
+        // create from DI container so plugins can modify email contents if they want
+        $email = StaticContainer::getContainer()->make(LoginFromDifferentCountryEmail::class, [
+            'login' => $login,
+            'email' => Piwik::getCurrentUserEmail(),
+            'country' => $country ? Piwik::translate('Intl_Country_' . strtoupper($country)) : '',
+            'ip' => $ip,
+        ]);
+        $email->safeSend();
     }
 }

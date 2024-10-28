@@ -12,7 +12,7 @@ namespace Piwik\Plugins\Login\Emails;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Piwik;
-use Piwik\Plugins\UsersManager\Model as UsersManagerModel;
+use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Url;
 use Piwik\View;
 
@@ -26,6 +26,11 @@ class LoginFromDifferentCountryEmail extends Mail
     /**
      * @var string
      */
+    private $email;
+
+    /**
+     * @var string
+     */
     private $country;
 
     /**
@@ -33,39 +38,23 @@ class LoginFromDifferentCountryEmail extends Mail
      */
     private $ip;
 
-    /**
-     * @var array
-     */
-    private $user;
 
-
-    public function __construct($login, $country, $ip)
+    public function __construct($login, $email, $country, $ip)
     {
         parent::__construct();
 
         $this->login = $login;
+        $this->email = $email;
         $this->country = $country;
         $this->ip = $ip;
-
-        $model = new UsersManagerModel();
-        $this->user = $model->getUser($this->login);
 
         $this->setUpEmail();
     }
 
     private function setUpEmail()
     {
-        if (
-            empty($this->user)
-            || empty($this->user['login'])
-        ) {
-            throw new \Exception('Unexpected error: unable to find user to send ' . __CLASS__);
-        }
-
-        $userEmailAddress = $this->user['email'];
-
         $this->setDefaultFromPiwik();
-        $this->addTo($userEmailAddress);
+        $this->addTo($this->email);
         $this->setSubject($this->getDefaultSubject());
         $this->addReplyTo($this->getFrom(), $this->getFromName());
         $this->setWrappedHtmlBody($this->getDefaultBodyView());
@@ -78,23 +67,23 @@ class LoginFromDifferentCountryEmail extends Mail
 
     private function getDateAndTimeFormatted(): string
     {
-        $date = Date::factory('now', 'UTC');
-        return $date->toString('Y-m-d H:i:s');
+        return Date::now()->getLocalized(Date::DATETIME_FORMAT_LONG);
     }
 
     private function getPasswordResetLink(): string
     {
-        // Create the reset URL
-        return Url::getCurrentUrlWithoutQueryString() . '?module=Login&showResetForm=1';
+        return Url::getCurrentUrlWithoutQueryString()
+            . '?module=' . Piwik::getLoginPluginName()
+            . '&showResetForm=1';
     }
 
     private function getEnable2FALink(): string
     {
-        $siteId = isset($this->user['defaultReport']) ? (int) $this->user['defaultReport'] : 1;
-
-        return Url::getCurrentUrlWithoutQueryString()
-            . '?module=TwoFactorAuth&action=setupTwoFactorAuth'
-            . '&idSite=' . $siteId;
+        if (PluginManager::getInstance()->isPluginActivated('TwoFactorAuth')) {
+            return Url::getCurrentUrlWithoutQueryString() . '?module=UsersManager&action=userSecurity';
+        } else {
+            return '';
+        }
     }
 
     private function getDefaultBodyView()
