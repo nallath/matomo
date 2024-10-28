@@ -22,23 +22,22 @@ class LoginFromDifferentCountryEmail extends Mail
     /**
      * @var string
      */
-    private $login;
+    protected $login;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      */
-    private $country;
+    protected $country;
 
     /**
      * @var string
      */
-    private $ip;
-
+    protected $ip;
 
     public function __construct(string $login, string $email, string $country, string $ip)
     {
@@ -61,24 +60,24 @@ class LoginFromDifferentCountryEmail extends Mail
         $this->setWrappedHtmlBody($this->getDefaultBodyView());
     }
 
-    private function getDefaultSubject(): string
+    protected function getDefaultSubject(): string
     {
         return Piwik::translate('Login_LoginFromDifferentCountryEmailSubject');
     }
 
-    private function getDateAndTimeFormatted(): string
+    protected function getDateAndTimeFormatted(): string
     {
         return Date::now()->getLocalized(DateTimeFormatProvider::DATETIME_FORMAT_LONG);
     }
 
-    private function getPasswordResetLink(): string
+    protected function getPasswordResetLink(): string
     {
         return Url::getCurrentUrlWithoutQueryString()
             . '?module=' . Piwik::getLoginPluginName()
             . '&showResetForm=1';
     }
 
-    private function getEnable2FALink(): string
+    protected function getEnable2FALink(): string
     {
         if (PluginManager::getInstance()->isPluginActivated('TwoFactorAuth')) {
             return Url::getCurrentUrlWithoutQueryString() . '?module=UsersManager&action=userSecurity';
@@ -87,7 +86,7 @@ class LoginFromDifferentCountryEmail extends Mail
         }
     }
 
-    private function getDefaultBodyView(): string
+    protected function getDefaultBodyView(): View
     {
         $view = new View('@Login/_loginFromDifferentCountryEmail.twig');
         $view->login = $this->login;
@@ -97,6 +96,6 @@ class LoginFromDifferentCountryEmail extends Mail
         $view->resetPasswordLink = $this->getPasswordResetLink();
         $view->enable2FALink = $this->getEnable2FALink();
 
-        return $view->render();
+        return $view;
     }
 }
