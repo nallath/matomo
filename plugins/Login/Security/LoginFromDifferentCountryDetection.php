@@ -9,7 +9,6 @@
 
 namespace Piwik\Plugins\Login\Security;
 
-use Piwik\Common;
 use Piwik\Container\StaticContainer;
 use Piwik\IP;
 use Piwik\Piwik;
