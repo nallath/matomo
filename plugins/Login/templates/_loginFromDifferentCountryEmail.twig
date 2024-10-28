@@ -4,10 +4,16 @@
 <ul>
     <li>{{ 'Login_IPAddress'|translate }}: {{ ip }}</li>
     <li>{{ 'Login_Country'|translate }}: {{ country }}</li>
-    <li>{{ 'Login_IPAddress'|translate }}: {{ dateTime }}</li>
+    <li>{{ 'Login_DateAndTime'|translate }}: {{ dateTime }} UTC</li>
 </ul>
+{% if resetPasswordLink or enable2FALink %}
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody03'|translate }}</p>
+{% endif %}
+{% if resetPasswordLink %}
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody04'|translate('<a href="' ~ resetPasswordLink|escape('html_attr') ~ '">', '</a>')|raw }}</p>
+{% endif %}
+{% if enable2FALink %}
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody05'|translate('<a href="' ~ enable2FALink|escape('html_attr') ~ '">', '</a>')|raw }}</p>
+{% endif %}
 
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody06'|translate }}</p>

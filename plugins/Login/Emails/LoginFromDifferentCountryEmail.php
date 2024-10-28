@@ -9,9 +9,13 @@
 
 namespace Piwik\Plugins\Login\Emails;
 
+use Piwik\Common;
+use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Piwik;
-use Piwik\Plugins\UsersManager\Model as UserManagerModel;
+use Piwik\Plugins\Login\PasswordResetter;
+use Piwik\Plugins\UsersManager\Model as UsersManagerModel;
+use Piwik\Url;
 use Piwik\View;
 
 class LoginFromDifferentCountryEmail extends Mail
@@ -32,36 +36,35 @@ class LoginFromDifferentCountryEmail extends Mail
     private $ip;
 
     /**
-     * @var string
+     * @var array
      */
-    private $dateTime;
+    private $user;
 
 
-
-    public function __construct($login, $country, $ip, $dateTime)
+    public function __construct($login, $country, $ip)
     {
         parent::__construct();
 
         $this->login = $login;
         $this->country = $country;
         $this->ip = $ip;
-        $this->dateTime = $dateTime;
+
+        $model = new UsersManagerModel();
+        $this->user = $model->getUser($this->login);
 
         $this->setUpEmail();
     }
 
     private function setUpEmail()
     {
-        $model = new UserManagerModel();
-        $user = $model->getUser($this->login);
         if (
-            empty($user)
-            || empty($user['login'])
+            empty($this->user)
+            || empty($this->user['login'])
         ) {
             throw new \Exception('Unexpected error: unable to find user to send ' . __CLASS__);
         }
 
-        $userEmailAddress = $user['email'];
+        $userEmailAddress = $this->user['email'];
 
         $this->setDefaultFromPiwik();
         $this->addTo($userEmailAddress);
@@ -75,16 +78,51 @@ class LoginFromDifferentCountryEmail extends Mail
         return Piwik::translate('Login_LoginFromDifferentCountryEmailSubject');
     }
 
+    private function getDateAndTimeFormatted(): string
+    {
+        $date = Date::factory('now', 'UTC');
+        return $date->toString('Y-m-d H:i:s');
+    }
+
+    private function getPasswordResetLink(): string
+    {
+        if (!empty($this->user)) {
+            $passwordResetter = new PasswordResetter();
+            $keySuffix = time() . Common::getRandomString($length = 32);
+
+            // Seems like we need to save the info, however there's no new password yet
+            // $this->savePasswordResetInfo($login, $newPassword, $keySuffix);
+            // Can we even link to the reset password view?
+
+            $resetToken = $passwordResetter->generatePasswordResetToken($this->user, $keySuffix);
+
+            // Create the reset URL
+            return Url::getCurrentUrlWithoutQueryString()
+                . '?module=Login&action=resetPassword&login=' . urlencode($this->login)
+                . '&resetToken=' . urlencode($resetToken);
+        }
+
+        return '';
+    }
+
+    private function getEnable2FALink(): string
+    {
+        $siteId = isset($this->user['defaultReport']) ? (int) $this->user['defaultReport'] : 1;
+
+        return Url::getCurrentUrlWithoutQueryString()
+            . '?module=TwoFactorAuth&action=setupTwoFactorAuth'
+            . '&idSite=' . $siteId;
+    }
+
     private function getDefaultBodyView()
     {
         $view = new View('@Login/_loginFromDifferentCountryEmail.twig');
         $view->login = $this->login;
         $view->country = $this->country;
         $view->ip = $this->ip;
-        $view->dateTime = $this->dateTime;
-        $view->resetPasswordLink = '';
-        $view->enable2FALink = '';
-
+        $view->dateTime = $this->getDateAndTimeFormatted();
+        $view->resetPasswordLink = $this->getPasswordResetLink();
+        $view->enable2FALink = $this->getEnable2FALink();
 
         return $view->render();
     }

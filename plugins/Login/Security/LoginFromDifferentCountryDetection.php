@@ -9,13 +9,16 @@
 
 namespace Piwik\Plugins\Login\Security;
 
+use Piwik\Common;
 use Piwik\Container\StaticContainer;
+use Piwik\IP;
 use Piwik\Plugins\GeoIp2\LocationProvider\GeoIp2;
 use Piwik\Plugins\Login\Emails\LoginFromDifferentCountryEmail;
 use Piwik\Plugins\Login\Emails\SuspiciousLoginAttemptsInLastHourEmail;
 use Piwik\Plugins\Login\Model;
 use Piwik\Log\LoggerInterface;
 use Piwik\Plugins\UserCountry\LocationProvider;
+use Piwik\Plugins\Login\UserSettings;
 
 class LoginFromDifferentCountryDetection
 {
@@ -23,6 +26,11 @@ class LoginFromDifferentCountryDetection
      * @var Model
      */
     private $model;
+
+    /**
+     * @var array|null
+     */
+    private $location = null;
 
     public function __construct(Model $model)
     {
@@ -34,11 +42,12 @@ class LoginFromDifferentCountryDetection
         // we need at least one GeoIP provider that is not the default or disabled one
         $geoIPWorking = $this->isGeoIPWorking();
 
+        // we need the user to have the option enabled - defaults to true if not set
+        $userSettings = new UserSettings();
+        $notificationEnabled = $userSettings->enableLoginCountryChangeNotification->getValue();
 
-
-        return true;
+        return $geoIPWorking && $notificationEnabled;
     }
-
 
     private function isGeoIPWorking(): bool
     {
@@ -46,28 +55,57 @@ class LoginFromDifferentCountryDetection
 
         return $provider instanceof GeoIp2
             && $provider->isAvailable()
-            && $provider->isWorking();
+            && $provider->isWorking()
+            && true === $provider->getSupportedLocationInfo()['country_name'];
+    }
+
+    private function getLocation(): array
+    {
+        if (null === $this->location) {
+            // since we checked whether the current provider is GeoIP,
+            // we can directly use it here
+            $provider = LocationProvider::getCurrentProvider();
+            $this->location = $provider->getLocation([
+                'ip' => IP::getIpFromHeader(),
+                'lang' => Common::getBrowserLanguage(),
+                'disable_fallbacks' => true,
+            ]) ?: ['country_name' => ''];
+        }
+
+        return $this->location;
     }
 
     private function getCurrentLoginCountry(): string
     {
-        $allProviderInfo = LocationProvider::getAllProviderInfo($newline = ' ', $includeExtra = true);
+        $country = $this->getLocation()['country_name'] ?? '';
+
+        return ('unknown' !== strtolower($country)) ? $country : '';
     }
 
     public function check(string $login): void
     {
-        $isDifferentCountries = $this->model->isCountryDifferentToLastLoginCountry($login);
+        $lastLoginCountry = $this->model->getLastLoginCountry($login);
+        $currentLoginCountry = $this->getCurrentLoginCountry();
 
-        echo '<pre>';
-        $allProviderInfo = LocationProvider::getAllProviderInfo($newline = ' ', $includeExtra = true);
+        $isDifferentCountries = $currentLoginCountry && $currentLoginCountry !== $lastLoginCountry;
 
-        var_dump($allProviderInfo);
+        if ($isDifferentCountries) {
+            if (!empty($lastLoginCountry)) {
+                // send email only if we had previous value
+                $this->sendLoginFromDifferentCountryEmailToUser(
+                    $login,
+                    $currentLoginCountry,
+                    IP::getIpFromHeader()
+                );
+            }
 
-        exit;
+            // store new country
+            $this->model->setLastLoginCountry($login, $currentLoginCountry);
+        }
     }
 
 
-    private function sendLoginFromDifferentCountryEmailToUser($login, $country, $ip, $dateTime)
+    private function sendLoginFromDifferentCountryEmailToUser($login, $country, $ip)
     {
         try {
             // create from DI container so plugins can modify email contents if they want
@@ -75,7 +113,6 @@ class LoginFromDifferentCountryDetection
                 'login' => $login,
                 'country' => $country,
                 'ip' => $ip,
-                'dateTime' => $dateTime,
             ]);
             $email->send();
         } catch (\Exception $ex) {
