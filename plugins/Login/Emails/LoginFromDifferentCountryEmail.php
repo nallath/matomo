@@ -27,11 +27,6 @@ class LoginFromDifferentCountryEmail extends Mail
     /**
      * @var string
      */
-    protected $email;
-
-    /**
-     * @var string
-     */
     protected $country;
 
     /**
@@ -39,12 +34,11 @@ class LoginFromDifferentCountryEmail extends Mail
      */
     protected $ip;
 
-    public function __construct(string $login, string $email, string $country, string $ip)
+    public function __construct(string $login, string $country, string $ip)
     {
         parent::__construct();
 
         $this->login = $login;
-        $this->email = $email;
         $this->country = $country;
         $this->ip = $ip;
 
@@ -54,7 +48,6 @@ class LoginFromDifferentCountryEmail extends Mail
     private function setUpEmail(): void
     {
         $this->setDefaultFromPiwik();
-        $this->addTo($this->email);
         $this->setSubject($this->getDefaultSubject());
         $this->addReplyTo($this->getFrom(), $this->getFromName());
         $this->setWrappedHtmlBody($this->getDefaultBodyView());

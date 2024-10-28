@@ -109,13 +109,15 @@ class LoginFromDifferentCountryDetection
 
     private function sendLoginFromDifferentCountryEmailToUser(string $login, string $countryCode, string $ip): void
     {
+        $country = $countryCode ? Piwik::translate('Intl_Country_' . strtoupper($countryCode)) : '';
+
         // create from DI container so plugins can modify email contents if they want
         $email = StaticContainer::getContainer()->make(LoginFromDifferentCountryEmail::class, [
             'login' => $login,
-            'email' => Piwik::getCurrentUserEmail(),
-            'country' => $country ? Piwik::translate('Intl_Country_' . strtoupper($countryCode)) : '',
+            'country' => $country,
             'ip' => $ip,
         ]);
+        $email->addTo(Piwik::getCurrentUserEmail(), $login);
         $email->safeSend();
     }
 }
