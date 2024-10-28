@@ -94,8 +94,6 @@
         "LoginFromDifferentCountryEmailBody04": "Reset your password: %1$sreset your password%2$s",
         "LoginFromDifferentCountryEmailBody05": "Enable Two-Factor Authentication (2FA) for additional security: %1$senable 2FA%2$s",
         "LoginFromDifferentCountryEmailBody06": "We also recommend reviewing your recent account activity to ensure there are no other unauthorised actions.",
-        "IPAddress": "IP address",
-        "Country": "Country",
         "DateAndTime": "Date &amp; time"
     }
 }

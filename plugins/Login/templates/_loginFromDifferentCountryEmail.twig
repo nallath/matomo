@@ -2,8 +2,8 @@
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody01'|translate }}</p>
 <p>{{ 'Login_LoginFromDifferentCountryEmailBody02'|translate }}</p>
 <ul>
-    <li>{{ 'Login_IPAddress'|translate }}: {{ ip }}</li>
-    <li>{{ 'Login_Country'|translate }}: {% if country %}{{ country }}{% else %}{{ 'General_Unknown'|translate }}{% endif %}</li>
+    <li>{{ 'PrivacyManager_IPAddress'|translate }}: {{ ip }}</li>
+    <li>{{ 'UserCountry_Country'|translate }}: {% if country %}{{ country }}{% else %}{{ 'General_Unknown'|translate }}{% endif %}</li>
     <li>{{ 'Login_DateAndTime'|translate|raw }}: {{ dateTime }} UTC</li>
 </ul>
 {% if resetPasswordLink or enable2FALink %}
