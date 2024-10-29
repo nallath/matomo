@@ -45,12 +45,7 @@ class LoginFromDifferentCountryDetection
     public function isEnabled(): bool
     {
         // we need at least one GeoIP provider that is not the default or disabled one
-        $geoIPWorking = $this->isGeoIPWorking();
-
-        // we need the user to have the option enabled - defaults to true if not set
-        $notificationEnabled = $this->isUserNotificationEnabled();
-
-        return $geoIPWorking && $notificationEnabled;
+        return $this->isGeoIPWorking();
     }
 
     private function isGeoIPWorking(): bool
@@ -61,14 +56,6 @@ class LoginFromDifferentCountryDetection
             && $provider->isAvailable()
             && $provider->isWorking()
             && true === $provider->getSupportedLocationInfo()[LocationProvider::COUNTRY_CODE_KEY];
-    }
-
-    private function isUserNotificationEnabled(): bool
-    {
-        // we need the user to have the option enabled - defaults to true if not set
-        // NOTE: it seems the first read in a new session is always using the default value
-        $userSettings = new UserSettings();
-        return $userSettings->enableLoginCountryChangeNotification->getValue();
     }
 
     private function getLocation(): array
