@@ -30,7 +30,7 @@ interface SiteWithMetrics extends Site {
   ratio?: number|string;
   previous_nb_visits?: string|number;
   previous_Actions_nb_pageviews?: string|number;
-  previous_Actions_nb_hits?: string|number;
+  previous_Actions_hits?: string|number;
   previous_Goal_revenue?: string|number;
   currencySymbol: string;
   periodName: string;
@@ -179,12 +179,12 @@ class DashboardStore {
         }
 
         if (this.state.value.sortColumn === 'hits_evolution') {
-          previousTotal = `${site.previous_Actions_nb_hits}`;
+          previousTotal = `${site.previous_Actions_hits}`;
           currentTotal = `${site.hits}`;
           evolution = NumberFormatter.formatPercent(site.hits_evolution);
           metricName = translate('General_ColumnHits');
           previousTotalAdjusted = NumberFormatter.formatNumber(
-            Math.round(parseInt(site.previous_Actions_nb_hits as string, 10)
+            Math.round(parseInt(site.previous_Actions_hits as string, 10)
               * parseInt(site.ratio as string, 10)),
           );
         }

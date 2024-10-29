@@ -306,7 +306,7 @@ class Dashboard
         // filter_sort_column does not work correctly is a bug in MultiSites.getAll
         $filterSprtColumnMapping = [
             'nb_pageviews' => 'Actions_nb_pageviews',
-            'hits' => 'Actions_nb_hits',
+            'hits' => 'Actions_hits',
             'revenue' => 'Goal_revenue',
         ];
 

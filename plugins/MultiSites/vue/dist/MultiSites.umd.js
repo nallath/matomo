@@ -638,7 +638,7 @@ function KPICardvue_type_template_id_3c2758fa_render(_ctx, _cache, $props, $setu
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/KPICard.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/KPICard.vue
 
 
@@ -674,7 +674,7 @@ KPICardvue_type_script_lang_ts.render = KPICardvue_type_template_id_3c2758fa_ren
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/KPICardContainer.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/KPICardContainer.vue
 
 
@@ -1004,7 +1004,7 @@ function SitesTableSitevue_type_template_id_47f7cfe0_render(_ctx, _cache, $props
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/SitesTableSite.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/SitesTableSite.vue
 
 
@@ -1120,7 +1120,7 @@ SitesTableSitevue_type_script_lang_ts.render = SitesTableSitevue_type_template_i
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/SitesTable.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/SitesTable.vue
 
 
@@ -1247,7 +1247,7 @@ SitesTablevue_type_script_lang_ts.render = SitesTablevue_type_template_id_0d846a
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/AllWebsitesDashboard.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/AllWebsitesDashboard/AllWebsitesDashboard.vue
 
 
@@ -1472,7 +1472,7 @@ function MultisitesSitevue_type_template_id_1d57e752_render(_ctx, _cache, $props
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/MultisitesSite/MultisitesSite.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/MultisitesSite/MultisitesSite.vue
 
 
@@ -1608,11 +1608,11 @@ var Dashboard_store_DashboardStore = /*#__PURE__*/function () {
           }
 
           if (_this2.state.value.sortColumn === 'hits_evolution') {
-            previousTotal = "".concat(site.previous_Actions_nb_hits);
+            previousTotal = "".concat(site.previous_Actions_hits);
             currentTotal = "".concat(site.nb_hits);
             evolution = NumberFormatter.formatPercent(site.hits_evolution);
             metricName = Object(external_CoreHome_["translate"])('General_ColumnHits');
-            previousTotalAdjusted = NumberFormatter.formatNumber(Math.round(parseInt(site.previous_Actions_nb_hits, 10) * parseInt(site.ratio, 10)));
+            previousTotalAdjusted = NumberFormatter.formatNumber(Math.round(parseInt(site.previous_Actions_hits, 10) * parseInt(site.ratio, 10)));
           }
 
           if (_this2.state.value.sortColumn === 'revenue_evolution') {
@@ -2210,7 +2210,7 @@ function Dashboardvue_type_template_id_07845904_render(_ctx, _cache, $props, $se
   }
 }));
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/Dashboard/Dashboard.vue?vue&type=script&lang=ts
- 
+
 // CONCATENATED MODULE: ./plugins/MultiSites/vue/src/Dashboard/Dashboard.vue
 
 
