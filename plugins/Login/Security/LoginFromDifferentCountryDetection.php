@@ -96,7 +96,7 @@ class LoginFromDifferentCountryDetection
         $lastLoginCountry = $this->model->getLastLoginCountry($login);
         $currentLoginCountry = $this->getCurrentLoginCountry();
 
-        $isDifferentCountries = $currentLoginCountry && $currentLoginCountry !== $lastLoginCountry;
+        $isDifferentCountries = $currentLoginCountry !== $lastLoginCountry;
 
         if ($isDifferentCountries) {
             if (null !== $lastLoginCountry) {
