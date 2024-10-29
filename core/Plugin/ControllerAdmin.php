@@ -14,6 +14,7 @@ use Piwik\Config;
 use Piwik\Container\StaticContainer;
 use Piwik\Date;
 use Piwik\Development;
+use Piwik\Exception\MissingFilePermissionException;
 use Piwik\Menu\MenuAdmin;
 use Piwik\Menu\MenuTop;
 use Piwik\Notification;
@@ -165,7 +166,7 @@ abstract class ControllerAdmin extends Controller
 
         $message .= Piwik::translate(
             'General_ReadThisToLearnMore',
-            ['<a rel="noreferrer noopener" target="_blank" href="' . Url::addCampaignParametersToMatomoLink('https://matomo.org/faq/how-to/faq_91/">'), '</a>']
+            ['<a rel="noreferrer noopener" target="_blank" href="' . Url::addCampaignParametersToMatomoLink('https://matomo.org/faq/how-to/faq_91/') . '">', '</a>']
         );
 
         $notification = new Notification($message);
@@ -202,14 +203,11 @@ abstract class ControllerAdmin extends Controller
      */
     public static function displayWarningIfConfigFileNotWritable()
     {
-        $isConfigFileWritable = PiwikConfig::getInstance()->isFileWritable();
-
-        if (!$isConfigFileWritable) {
-            $exception = PiwikConfig::getInstance()->getConfigNotWritableException();
-            $message = $exception->getMessage();
-
-            $notification = new Notification($message);
-            $notification->raw     = true;
+        try {
+            PiwikConfig::getInstance()->checkConfigIsWritable();
+        } catch (MissingFilePermissionException $exception) {
+            $notification = new Notification($exception->getMessage());
+            $notification->raw = true;
             $notification->context = Notification::CONTEXT_WARNING;
             Notification\Manager::notify('ControllerAdmin_ConfigNotWriteable', $notification);
         }
