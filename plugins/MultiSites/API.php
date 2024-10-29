@@ -42,7 +42,7 @@ class API extends \Piwik\Plugin\API
 
     public const NB_VISITS_METRIC = 'nb_visits';
     public const NB_ACTIONS_METRIC = 'nb_actions';
-    public const NB_HITS_LABEL = 'nb_hits';
+    public const NB_HITS_LABEL = 'hits';
     public const NB_HITS_METRIC = 'Actions_nb_hits';
     public const NB_PAGEVIEWS_LABEL = 'nb_pageviews';
     public const NB_PAGEVIEWS_METRIC = 'Actions_nb_pageviews';

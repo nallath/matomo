@@ -44,7 +44,7 @@
       <span class="value">{{ website.nb_pageviews }}</span>
     </td>
     <td class="multisites-column">
-      <span class="value">{{ website.nb_hits }}</span>
+      <span class="value">{{ website.hits }}</span>
     </td>
     <td
       class="multisites-column"
@@ -152,7 +152,7 @@ export default defineComponent({
           metric = 'nb_pageviews';
           break;
         case 'hits_evolution':
-          metric = 'nb_hits';
+          metric = 'hits';
           break;
         case 'revenue_evolution':
           metric = 'revenue';

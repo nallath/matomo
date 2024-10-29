@@ -128,7 +128,7 @@ class Metrics
         Metrics::INDEX_GOALS                                 => 'goals',
         Metrics::INDEX_SUM_DAILY_NB_UNIQ_VISITORS            => 'sum_daily_nb_uniq_visitors',
         Metrics::INDEX_SUM_DAILY_NB_USERS                    => 'sum_daily_nb_users',
-        Metrics::INDEX_NB_HITS                               => 'nb_hits',
+        Metrics::INDEX_NB_HITS                               => 'hits',
 
         // Actions metrics
         Metrics::INDEX_PAGE_NB_HITS                          => 'nb_hits',
@@ -435,6 +435,7 @@ class Metrics
             'nb_conversions'                => 'Goals_ColumnConversions',
             'revenue'                       => 'General_ColumnRevenue',
             'nb_hits'                       => 'General_ColumnPageviews',
+            'hits'                          => 'General_ColumnHits',
             'entry_nb_visits'               => 'General_ColumnEntrances',
             'entry_nb_uniq_visitors'        => 'General_ColumnUniqueEntrances',
             'exit_nb_visits'                => 'General_ColumnExits',
@@ -566,6 +567,7 @@ class Metrics
             'conversion_rate'      => 'General_ColumnConversionRateDocumentation',
             'avg_time_on_page'     => 'General_ColumnAverageTimeOnPageDocumentation',
             'nb_hits'              => 'General_ColumnPageviewsDocumentation',
+            'hits'                 => 'General_ColumnHitsDocumentation',
             'exit_rate'            => 'General_ColumnExitRateDocumentation'
         );
 

@@ -21,7 +21,7 @@ interface SiteWithMetrics extends Site {
   nb_actions: string|number;
   nb_pageviews: string|number;
   nb_visits: string|number;
-  nb_hits: string|number;
+  hits: string|number;
   pageviews_evolution: string;
   hits_evolution: string;
   revenue: string;
@@ -41,7 +41,7 @@ interface SiteWithMetrics extends Site {
 interface SiteTotals {
   nb_actions: string|number;
   nb_pageviews: string|number;
-  nb_hits: string|number;
+  hits: string|number;
   nb_visits: string|number;
   nb_visits_lastdate: string|number;
   revenue: string|number;
@@ -180,7 +180,7 @@ class DashboardStore {
 
         if (this.state.value.sortColumn === 'hits_evolution') {
           previousTotal = `${site.previous_Actions_nb_hits}`;
-          currentTotal = `${site.nb_hits}`;
+          currentTotal = `${site.hits}`;
           evolution = NumberFormatter.formatPercent(site.hits_evolution);
           metricName = translate('General_ColumnHits');
           previousTotalAdjusted = NumberFormatter.formatNumber(
@@ -261,7 +261,7 @@ class DashboardStore {
     });
     this.privateState.totalVisits = report.totals.nb_visits;
     this.privateState.totalPageviews = report.totals.nb_pageviews;
-    this.privateState.totalHits = report.totals.nb_hits;
+    this.privateState.totalHits = report.totals.hits;
     this.privateState.totalActions = report.totals.nb_actions;
     this.privateState.totalRevenue = report.totals.revenue;
     this.privateState.lastVisits = report.totals.nb_visits_lastdate;
@@ -315,7 +315,7 @@ class DashboardStore {
         'label',
         'nb_visits',
         'nb_pageviews',
-        'nb_hits',
+        'hits',
         'visits_evolution',
         'visits_evolution_trend',
         'pageviews_evolution',

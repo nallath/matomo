@@ -33,7 +33,7 @@ class Get extends Base
             'nb_uniq_outlinks',
             'nb_searches',
             'nb_keywords',
-            'nb_hits'
+            'hits'
         );
     }
 }

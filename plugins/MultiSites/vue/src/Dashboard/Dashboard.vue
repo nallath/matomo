@@ -79,14 +79,14 @@
           <th
             id="hits"
             class="multisites-column"
-            @click="sortBy('nb_hits')"
-            :class="{columnSorted: 'nb_hits' === sortColumn}"
+            @click="sortBy('hits')"
+            :class="{columnSorted: 'hits' === sortColumn}"
           >
             <span
               class="arrow"
               :class="{
-                multisites_asc: !reverse && 'nb_hits' === sortColumn,
-                multisites_desc: reverse && 'nb_hits' === sortColumn,
+                multisites_asc: !reverse && 'hits' === sortColumn,
+                multisites_desc: reverse && 'hits' === sortColumn,
               }"
               style="margin-right: 3.5px"
             />
